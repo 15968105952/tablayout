@@ -2051,6 +2051,7 @@ public class TabLayout extends HorizontalScrollView {
             }
         }
 
+        private boolean isFirst = true;
         @Override
         public void draw(Canvas canvas) {
             super.draw(canvas);
@@ -2068,10 +2069,23 @@ public class TabLayout extends HorizontalScrollView {
                 if (mSelectedIndicatorWidth > 0 && getSelectedTabPosition() >= 0 &&
                         (mIsIndicatorWidthWrapContent || (mSelectedIndicatorWidth <= minTabWidth))
                 ) {
-                    if (mViewPager == null || !mIsDragged) {
+//                    if (mViewPager == null || !mIsDragged) {
+//                        left = mIndicatorLeft + (getChildAt(getSelectedTabPosition()).getMeasuredWidth() - mSelectedIndicatorWidth) / 2.0f;
+//                        right = left + mSelectedIndicatorWidth;
+//                    }
+
+                 //解决3个或者3个以上tab无法展示下划线的问题
+                    if (isFirst) {
                         left = mIndicatorLeft + (getChildAt(getSelectedTabPosition()).getMeasuredWidth() - mSelectedIndicatorWidth) / 2.0f;
                         right = left + mSelectedIndicatorWidth;
+                        isFirst = false;
+                    } else {
+                        if (mViewPager == null || !mIsDragged) {
+                            left = mIndicatorLeft + (getChildAt(getSelectedTabPosition()).getMeasuredWidth() - mSelectedIndicatorWidth) / 2.0f;
+                            right = left + mSelectedIndicatorWidth;
+                        }
                     }
+
                     RectF rectF = new RectF(left,
                             getHeight() - mSelectedIndicatorHeight,
                             right,
